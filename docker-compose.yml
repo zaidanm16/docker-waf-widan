@@ -1,0 +1,25 @@
+version: '3.9'
+services:
+  app:
+    ports:
+      - 8080:80
+    build: ./web
+    volumes:
+      - ./web/app:/var/www/html
+      - ./web/conf/00-default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./web/conf/security2.conf:/etc/apache2/mods-available/security2.conf
+    depends_on:
+      - db
+    container_name: app-widan
+
+  db:
+    build: ./db
+    volumes:
+       - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "widan16"
+      MYSQL_DATABASE: "widan_db"
+    container_name: db-widan
+
+volumes:
+  db_data:
